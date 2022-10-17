@@ -23,7 +23,7 @@ if (todo) {
     if (err) {
       console.error("Error =>", err);
     }
-    console.log("list ✅", response);
+    console.log(response);
   });
 }
 

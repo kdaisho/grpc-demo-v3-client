@@ -15,5 +15,5 @@ message Todo {
 }
 
 message Todos {
-  repeated Todo list = 1;
+  repeated Todo todos = 1;
 }
