@@ -2,19 +2,18 @@ syntax = "proto3";
 
 package todoPackage;
 
-service Todo {
-  rpc createTodo(TodoItem) returns (TodoItem);
-  rpc readTodos(_) returns (TodoItems);
-  rpc readTodosStream(_) returns (stream TodoItem);
+service TodoList {
+  rpc ListTodo (_) returns (Todos);
+  rpc CreateTodo (Todo) returns (Todo);
 }
 
 message _ {}
 
-message TodoItem {
+message Todo {
   int32 id = 1;
-  string text = 2;
+  string todo = 2;
 }
 
-message TodoItems {
-  repeated TodoItem items = 1;
+message Todos {
+  repeated Todo list = 1;
 }

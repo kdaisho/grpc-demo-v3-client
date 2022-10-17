@@ -4,30 +4,27 @@ const packageDef = protoLoader.loadSync("todo.proto", {});
 const grpcObject = grpc.loadPackageDefinition(packageDef);
 const todoPackage = grpcObject.todoPackage;
 
-const text = process.argv[2];
+const todo = process.argv[2] || "";
 
-const client = new todoPackage.Todo(
-  "localhost:5555",
+const client = new todoPackage.TodoList(
+  "localhost:50051",
   grpc.credentials.createInsecure()
 );
 
-client.createTodo(
-  {
-    id: -1,
-    text,
-  },
-  (err, response) => {
-    console.log("[new] 🚀", response);
-  }
-);
+if (todo) {
+  client.CreateTodo({ todo }, async (err, response) => {
+    if (err) {
+      console.error("Error =>", err);
+    }
+    console.log("created 🚀", response);
+  });
+} else {
+  client.ListTodo(null, async (err, response) => {
+    if (err) {
+      console.error("Error =>", err);
+    }
+    console.log("list ✅", response);
+  });
+}
 
-client.readTodos(null, (err, response) => {
-  return;
-  // response.items?.forEach(({ text }) => console.log(text));
-});
-
-const call = client.readTodosStream();
-call.on("data", (item) => {
-  console.log("[streaming todo list] ⚡️", item);
-});
-call.on("end", () => console.log("server done!"));
+client.close();
